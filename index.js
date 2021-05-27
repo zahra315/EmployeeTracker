@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "zahra",
+  password: "",
   database: "employeeTrackerDB",
 });
 
@@ -163,10 +163,13 @@ const manager = () => {
   );
   return listOfManagers;
 };
+
 const addRole = () => {
   connection.query(
     "SELECT role.title AS Title, role.salary AS Salary FROM role",
     (err, res) => {
+      if (err) throw err;
+      console.table(res);
       inquirer
         .prompt([
           {
@@ -180,22 +183,40 @@ const addRole = () => {
             message: "What is the Salary?",
           },
         ])
-        .then((response) => {
+        .then((res) => {
           connection.query(
-            "INSERT INTO role SET ?",
-            {
-              title: response.title,
-              salary: response.salary,
-            },
-            (err) => {
-              if (err) throw err;
-              console.table(response);
-              start();
-            }
+            `INSERT INTO role(role.title,role.salary) VALUES (?,?)`,
+            [res.title, res.salary]
           );
+          start();
         });
     }
   );
 };
-// const addDepartment = () => {};
+
+const addDepartment = () => {
+  connection.query(
+    `SELECT department_name AS 'Department' FROM department`,
+    (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "department",
+            message: "What Department would you like to add?",
+          },
+        ])
+        .then((res) => {
+          connection.query(
+            `INSERT INTO department(department_name) VALUES(?)`,
+            [res.department]
+          );
+          start();
+        });
+    }
+  );
+};
+
 // const updateEmployeeRole = () => {};
