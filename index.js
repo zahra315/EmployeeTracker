@@ -102,7 +102,67 @@ const viewAllEmployeeByDepartment = () => {
   });
 };
 
-// const addEmployee = () => {};
+const addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Enter the employee First Name: ",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Enter the employee Last Name: ",
+      },
+      {
+        type: "list",
+        name: "role",
+        message: "Enter the employee Role: ",
+        choices: role(),
+      },
+      {
+        type: "list",
+        name: "manager",
+        message: "Enter managers Name: ",
+        choices: manager(),
+      },
+    ])
+    .then((response) => {
+      connection.query(
+        `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES(?, ?, 
+                (SELECT id FROM role WHERE title = ? ), 
+                (SELECT id FROM (SELECT id FROM employee WHERE CONCAT(first_name," ",last_name) = ? ) AS temptable))`,
+        [response.firstName, response.lastName, response.role, response.manager]
+      );
+      start();
+    });
+};
+
+const listOfRole = [];
+const role = () => {
+  connection.query("SELECT * FROM role", function (err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      listOfRole.push(res[i].title);
+    }
+  });
+  return listOfRole;
+};
+
+const listOfManagers = [];
+const manager = () => {
+  connection.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        listOfManagers.push(res[i].first_name);
+      }
+    }
+  );
+  return listOfManagers;
+};
 // const addRole = () => {};
 // const addDepartment = () => {};
 // const updateEmployeeRole = () => {};
