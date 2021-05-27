@@ -14,7 +14,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "",
+  password: "zahra",
   database: "employeeTrackerDB",
 });
 
@@ -154,7 +154,7 @@ const listOfManagers = [];
 const manager = () => {
   connection.query(
     "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
-    function (err, res) {
+    (err, res) => {
       if (err) throw err;
       for (var i = 0; i < res.length; i++) {
         listOfManagers.push(res[i].first_name);
@@ -163,6 +163,39 @@ const manager = () => {
   );
   return listOfManagers;
 };
-// const addRole = () => {};
+const addRole = () => {
+  connection.query(
+    "SELECT role.title AS Title, role.salary AS Salary FROM role",
+    (err, res) => {
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "title",
+            message: "What is the Role Title?",
+          },
+          {
+            type: "input",
+            name: "salary",
+            message: "What is the Salary?",
+          },
+        ])
+        .then((response) => {
+          connection.query(
+            "INSERT INTO role SET ?",
+            {
+              title: response.title,
+              salary: response.salary,
+            },
+            (err) => {
+              if (err) throw err;
+              console.table(response);
+              start();
+            }
+          );
+        });
+    }
+  );
+};
 // const addDepartment = () => {};
 // const updateEmployeeRole = () => {};
