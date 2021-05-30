@@ -19,14 +19,15 @@ The application has the following options:
 - Update an employee role
 
 <p align="center">
-  <img src="https://github.com/zahra315/EmployeeTracker/image/01.jpg" width="50%">
+  <img src="https://github.com/zahra315/EmployeeTracker/blob/main/image/01.jpg" width="50%">
 </p>
+
 ## Installation
 
-Run `npm install` to install all dependencies
-Run `employeeTrackerSchema.sql` in MySQLWorkbench
-(Optional) Run `employeeTrackerSeed.sql` in MySQLWorkbench
-Edit MySQL connection properties in the connection object in `index.js`
+- Run `npm install` to install all dependencies
+- Run `employeeTrackerSchema.sql` in MySQLWorkbench
+- (Optional) Run `employeeTrackerSeed.sql` in MySQLWorkbench
+- Edit MySQL connection properties in the connection object in `index.js`
 
 ## Technologies Used
 
