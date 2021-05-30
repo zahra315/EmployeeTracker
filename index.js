@@ -219,4 +219,45 @@ const addDepartment = () => {
   );
 };
 
-// const updateEmployeeRole = () => {};
+const updateEmployeeRole = () => {
+  connection.query(
+    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id",
+    (err, res) => {
+      if (err) throw err;
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "emLastName",
+            message: "What is the Employee's last name? ",
+            choices: function () {
+              let lastName = [];
+              for (var i = 0; i < res.length; i++) {
+                lastName.push(res[i].last_name);
+              }
+              return lastName;
+            },
+          },
+          {
+            type: "list",
+            name: "newRole",
+            message: "What is the Employees new title? ",
+            choices: role(),
+          },
+        ])
+        .then((res) => {
+          connection.query(
+            `UPDATE employee 
+            SET role_id = (SELECT id FROM role WHERE title = ? ) 
+            WHERE id = (SELECT id FROM(SELECT id FROM employee WHERE last_name = ?) AS temptable)`,
+            [res.newRole, res.emLastName],
+            (err, res) => {
+              if (err) throw err;
+              start();
+            }
+          );
+        });
+    }
+  );
+};
