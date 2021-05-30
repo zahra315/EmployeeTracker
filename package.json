@@ -1,0 +1,26 @@
+{
+  "name": "EmployeeTracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zahra315/EmployeeTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zahra315/EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/zahra315/EmployeeTracker#readme",
+  "dependencies": {
+    "inquire": "^0.4.8",
+    "inquirer": "^8.1.0",
+    "mysql": "^2.18.1"
+  }
+}
